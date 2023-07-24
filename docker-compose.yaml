@@ -1,14 +1,14 @@
 version: '3.10'
 
 services:
-  # Контейнер с базой данных Postgres
   db:
     image: postgres:15.0-alpine
     env_file:
-      - ./.env
+      - ./docker.env
     volumes:
       - /var/lib/postgresql/data/
-
+    networks:
+      - digestservice
 
   api:
     build:
@@ -17,8 +17,13 @@ services:
     restart: always
     depends_on:
       - db
+    ports:
+      - "8000:8000"
+    networks:
+      - digestservice
     command: >
-      bash -c "python3 src/main.py"
+      bash -c "python3 src/main.py --host 0.0.0.0 --port 8000"
 
-volumes:
-  db_value:
+networks:
+  digestservice:
+
