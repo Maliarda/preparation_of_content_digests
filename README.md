@@ -92,11 +92,24 @@ poetry add <package-name>
 2. Записать в этот файл следующее: 
 
 ```
+POSTGRES__URL=postgresql+asyncpg://user:password@localhost:5432/digestservice
+POSTGRES__URL_TEST=postgresql+asyncpg://user:password@localhost:5432/test_digestservice
+SQLALCHEMY__URL=postgresql://user:password@localhost:5432/digestservice
 POSTGRES_DB=тут_ваше_название_БД_какую_создали_на_предыдущем_шаге
+
 POSTGRES_USER=тут_ваш_пользователь_БД
 POSTGRES_PASSWORD=тут_ваш_пароль_от_БД
 POSTGRES_HOST=localhost  
 POSTGRES_PORT=5432
+
+UVICORN__RELOAD=True
+UVICORN__HOST=0.0.0.0
+UVICORN__PORT=8000
+
+PROJECT_NAME=digestservice
+APP_SLUG=digestservice
+API_PREFIX=/api/v1
+DEBUG=True
 ```
 
 ### Запуск сервера
