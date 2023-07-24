@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.crud import create_new_digest, get_latest_digest, get_user_by_id
@@ -15,7 +15,7 @@ router = APIRouter()
 
 @router.get("/get_digest", response_model=UserDigestResponse)
 async def get_digest(
-    user_id: UUID = Header(...),
+    user_id: UUID = Query(...),
     session: AsyncSession = Depends(get_async_session),
 ):
     """
@@ -34,7 +34,7 @@ async def get_digest(
 
 @router.post("/create_digest/")
 async def create_digest(
-    user_id: UUID,
+    user_id: UUID = Query(...),
     popularity: int = Query(None, ge=0, le=100),
     session: AsyncSession = Depends(get_async_session),
 ):
@@ -73,7 +73,6 @@ async def create_user(
     user_name: str,
     session: AsyncSession = Depends(get_async_session),
 ):
-    # Создаем нового пользователя и добавляем его в базу данных
     new_user = User(name=user_name)
     session.add(new_user)
     await session.commit()
